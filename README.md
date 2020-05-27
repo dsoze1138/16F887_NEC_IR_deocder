@@ -1,7 +1,7 @@
 PIC16F887 NEC IR Remote decoder app
 ===================================
 
-PIC assembly language code that runs on the Microchip PICDEM2 Plus (DM163022-1) 
+MPLABX v5.35 PIC assembly language code that runs on the Microchip PICDEM2 Plus (DM163022-1) 
 
 http://www.microchip.com/Developmenttools/ProductDetails.aspx?PartNO=DM163022-1
 

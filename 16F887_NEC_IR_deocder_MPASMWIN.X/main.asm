@@ -6,6 +6,12 @@
 #include "main.inc"
 #include "lcd.inc"
 ;
+; PIC16F887 Configuration Bit Settings
+; Assembly source line config statements
+;
+ __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_ON & _CP_OFF & _CPD_OFF & _BOREN_OFF & _IESO_ON & _FCMEN_OFF & _LVP_OFF
+ __CONFIG _CONFIG2, _BOR4V_BOR21V & _WRT_OFF
+;
 ; File:     main.asm
 ; Date:     2020-05-23
 ; Target:   PIC16F887
@@ -20,9 +26,12 @@
 ;                   (REPEAT event when pause is less than 4ms but greater than 2ms)
 ;       Short flash (0.5 to 0.6ms)
 ;
-;     For a COMMAND event is sent this repeats 32 times:
+;     When a COMMAND is sent this repeats 32 times:
 ;       Pause       DATA is one when pause is more than 1ms, else DATA is zero.
 ;       Short flash (0.5 to 0.6ms)
+;
+;   The repeat period is 100ms. This is the first period where 50Hz and 60Hz
+;   power line frequencies have a common zero crossing node.
 ;
 ;
 ; See: https://stackoverflow.com/questions/61987319/ir-receiver-with-pic16f887-assembly-language
@@ -36,7 +45,7 @@
 ;           <>  5 : RA3/AN3   PGM/AN9/RB3 : 36 <> 
 ;           <>  6 : RA4/T0CKI     AN8/RB2 : 35 <> 
 ;           <>  7 : RA5/AN4      AN10/RB1 : 34 <> 
-;           <>  8 : RE0/AN5  INT/AN12/RB0 : 33 <> IR_RECEIVERn
+;           <>  8 : RE0/AN5  INT/AN12/RB0 : 33 <- IR_RECEIVERn
 ;           <>  9 : RE1/AN6           VDD : 32 <- 5v0
 ;           <> 10 : RE2/AN7           VSS : 31 <- GND
 ;       5v0 -> 11 : VDD               RD7 : 30 -> LCD_ON

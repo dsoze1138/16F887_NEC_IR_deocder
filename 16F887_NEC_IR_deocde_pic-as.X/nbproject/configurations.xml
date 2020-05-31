@@ -16,6 +16,7 @@
                    projectFiles="true">
       <itemPath>lcd.S</itemPath>
       <itemPath>main.S</itemPath>
+      <itemPath>config.S</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -53,7 +54,7 @@
         </archiverTool>
         <loading>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
-          <parseOnProdLoad>false</parseOnProdLoad>
+          <parseOnProdLoad>true</parseOnProdLoad>
           <alternateLoadableFile></alternateLoadableFile>
         </loading>
         <subordinates>
@@ -66,7 +67,7 @@
         <makeCustomizationPostStep></makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
-        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+        <makeCustomizationNormalizeHexFile>true</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
@@ -542,10 +543,10 @@
         <property key="custom-dfp" value=""/>
         <property key="instruction-set" value="std"/>
         <property key="summary-class" value="false"/>
-        <property key="summary-file" value="false"/>
+        <property key="summary-file" value="true"/>
         <property key="summary-hex" value="false"/>
         <property key="summary-mem" value="true"/>
-        <property key="summary-psect" value="false"/>
+        <property key="summary-psect" value="true"/>
         <property key="summary-sha1" value="false"/>
         <property key="summary-sha256" value="false"/>
         <property key="summary-xml" value="false"/>

@@ -6,12 +6,6 @@
 #include "main.inc"
 #include "lcd.inc"
 ;
-; PIC16F887 Configuration Bit Settings
-; Assembly source line config statements
-;
- __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_ON & _CP_OFF & _CPD_OFF & _BOREN_OFF & _IESO_ON & _FCMEN_OFF & _LVP_OFF
- __CONFIG _CONFIG2, _BOR4V_BOR21V & _WRT_OFF
-;
 ; File:     main.asm
 ; Date:     2020-05-23
 ; Target:   PIC16F887
@@ -64,7 +58,7 @@
 ; Power on reset vector
 ;
 RES_VECT    CODE    0x0000      ; processor reset vector
-    pagesel START
+    clrf    PCLATH
     GOTO    START               ; go to beginning of program
 ;
 ; Interrupt context save area

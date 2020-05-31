@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>16F887_NEC_IR_deocde_pic-as(v2.20)</name>
+            <name>16F887_NEC_IR_deocde_pic-as</name>
             <creation-uuid>012c1071-2e57-489c-b7a2-a5c109a60fc8</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions/>

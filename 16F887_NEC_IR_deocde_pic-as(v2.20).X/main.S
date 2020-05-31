@@ -280,16 +280,19 @@ RepeatCount: ds     1
 ; Main application initialization
 ;
 main:
-    lcall   OpenXLCD
+    pagesel OpenXLCD
+    call    OpenXLCD
  
     movlw   LINE_ONE
-    lcall   SetDDRamAddr
+    pagesel SetDDRamAddr
+    call    SetDDRamAddr
 
     movlw   LOW(LCD_message1)
     movwf   pszLCD_RomStr
     movlw   HIGH(LCD_message1)
     movwf   pszLCD_RomStr+1
-    lcall   putrsXLCD
+    pagesel putrsXLCD
+    call    putrsXLCD
 
     banksel NEC_IR_Flags
     clrf    NEC_IR_Flags
@@ -324,42 +327,52 @@ IncrementCount:
 ; Show measurement for Start Of Transmission (SOT) flash
 ;
     movlw   LINE_TWO
-    lcall   SetDDRamAddr
+    pagesel SetDDRamAddr
+    call    SetDDRamAddr
     movf    NEC_IR_StartFlash,W
-    lcall   PutDecXLCD
+    pagesel PutDecXLCD
+    call    PutDecXLCD
 ;
 ; Show measurement for pause after SOT flash
 ;
     movlw   ' '
-    lcall   WriteDataXLCD
+    pagesel WriteDataXLCD
+    call    WriteDataXLCD
     movf    NEC_IR_CdPause,W
-    lcall   PutDecXLCD
+    pagesel PutDecXLCD
+    call    PutDecXLCD
 ;
 ; Show decoded ADDRESS and COMMAND
 ;
     movlw   ' '
-    lcall   WriteDataXLCD
+    pagesel WriteDataXLCD
+    call    WriteDataXLCD
     banksel NEC_IR_Address
     movf    NEC_IR_Address,W
-    lcall   PutHexXLCD
+    pagesel PutHexXLCD
+    call    PutHexXLCD
     banksel NEC_IR_Command
     movf    NEC_IR_Command,W
-    lcall   PutHexXLCD
+    pagesel PutHexXLCD
+    call    PutHexXLCD
 ;
 ; Show REPEAT count
 ;
     movlw   ' '
-    lcall   WriteDataXLCD
+    pagesel WriteDataXLCD
+    call    WriteDataXLCD
     banksel RepeatCount
     movf    RepeatCount,W
-    lcall   PutHexXLCD
+    pagesel PutHexXLCD
+    call    PutHexXLCD
 ;
 ; Clear event flags to enable capture of next event
 ;
     banksel NEC_IR_Flags
     clrf    NEC_IR_Flags
 
-    ljmp    AppLoop
+    pagesel AppLoop
+    GOTO    AppLoop
 ;
 ; LCD messages
 ;

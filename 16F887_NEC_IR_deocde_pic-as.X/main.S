@@ -15,7 +15,7 @@
 ;
 ;   Physical transport:
 ;       Long flash  (> 8ms)
-;       Pause       (COMMAND event when pause is more than 4ms), 
+;       Pause       (COMMAND event when pause is more than 4ms),
 ;                   (REPEAT event when pause is less than 4ms but greater than 2ms)
 ;       Short flash (0.5 to 0.6ms)
 ;
@@ -35,9 +35,9 @@
 ;           <>  2 : RA0/AN0       PGC/RB6 : 39 <> PGC
 ;           <>  3 : RA1/AN1      AN13/RB5 : 38 <>
 ;           <>  4 : RA2/AN2      AN11/RB4 : 37 <>
-;           <>  5 : RA3/AN3   PGM/AN9/RB3 : 36 <> 
-;           <>  6 : RA4/T0CKI     AN8/RB2 : 35 <> 
-;           <>  7 : RA5/AN4      AN10/RB1 : 34 <> 
+;           <>  5 : RA3/AN3   PGM/AN9/RB3 : 36 <>
+;           <>  6 : RA4/T0CKI     AN8/RB2 : 35 <>
+;           <>  7 : RA5/AN4      AN10/RB1 : 34 <>
 ;           <>  8 : RE0/AN5  INT/AN12/RB0 : 33 <- IR_RECEIVERn
 ;           <>  9 : RE1/AN6           VDD : 32 <- 5v0
 ;           <> 10 : RE2/AN7           VSS : 31 <- GND
@@ -45,10 +45,10 @@
 ;       GND -> 12 : VSS               RD6 : 29 -> LCD_E
 ;           -> 13 : RA7/OSC1          RD5 : 28 -> LCD_RW
 ;           <- 14 : RA6/OSC2          RD4 : 27 -> LCD_RS
-;           <> 15 : RC0/SOSCO   RX/DT/RC7 : 26 <>    
-;           <> 16 : RC1/SOSCI   TX/CK/RC6 : 25 <>    
+;           <> 15 : RC0/SOSCO   RX/DT/RC7 : 26 <>
+;           <> 16 : RC1/SOSCI   TX/CK/RC6 : 25 <>
 ;           <> 17 : RC2/CCP1          RC5 : 24 <>
-;           <> 18 : RC3/SCL       SDA/RC4 : 23 <>    
+;           <> 18 : RC3/SCL       SDA/RC4 : 23 <>
 ;    LCD_D4 <> 19 : RD0               RD3 : 22 <> LCD_D7
 ;    LCD_D5 <> 20 : RD1               RD2 : 21 <> LCD_D6
 ;                 +-----------------------:
@@ -56,25 +56,28 @@
 ;
 ; Power on reset vector
 ;
-    psect   ResetVector,abs,local,class=CODE,delta=2
+    psect   RstVect,abs,global,class=CODE,delta=2
     org     0x0000
+    global  POReset
 POReset:
     clrf    PCLATH
     GOTO    START               ; go to beginning of program
 ;
 ; Interrupt context save area
 ;
-    psect   udata_shr
+    psect   IsrData_shr,global,class=COMMON,space=1,delta=1,noexec
 WREG_SAVE:   ds     1
 STATUS_SAVE: ds     1
 PCLATH_SAVE: ds     1
+
+    psect   NecIrData_shr,global,class=COMMON,space=1,delta=1,noexec
 NEC_IR_State:       ds  1
 NEC_IR_StartFlash:  ds  1
 NEC_IR_CdPause:     ds  1
 ;
 ; Data area for protocol decoder
 ;
-    psect   udata
+    psect   NecIrData,global,class=RAM,space=1,delta=1,noexec
 NEC_IR_RawData:     ds  4
 NEC_IR_Address:     ds  1
 NEC_IR_Command:     ds  1
@@ -84,13 +87,13 @@ NEC_IR_Flags:       ds  1
 ;
 ; Interrupt Service Routine
 ;
-    psect   ISRVector,abs,local,class=CODE,delta=2
+    psect   IsrVect,abs,global,class=CODE,delta=2
     org     0x0004
-
-ISR:
-    movwf   WREG_SAVE           ; 
+    global  Isr
+Isr:
+    movwf   WREG_SAVE           ;
     movf    STATUS,W            ; These register: WREG, STATUS, PCLATH
-    movwf   STATUS_SAVE         ; are what, at the minimum, must be saved 
+    movwf   STATUS_SAVE         ; are what, at the minimum, must be saved
     movf    PCLATH,W            ; and restored on an interrupt.
     movwf   PCLATH_SAVE         ;
     clrf    STATUS              ; Force to memory bank 0
@@ -110,7 +113,7 @@ ISR:
     goto    INT_End
 
     movf    NEC_IR_State,F
-    btfss   STATUS,STATUS_Z_POSITION    ;skpz    
+    btfss   STATUS,STATUS_Z_POSITION    ;skpz
     goto    NEC_IR_NextState
 ;
 ; Look for initial long flash
@@ -264,19 +267,19 @@ START:
 ;
 ; Main data
 ;
-    psect   udata
+    psect   MainData,global,class=RAM,space=1,delta=1,noexec
 RepeatCount: ds     1
 ;
 ; Main application code
 ;
-    psect   MainFunc,local,class=CODE,delta=2
-; 
+    psect   MainCode,global,class=CODE,delta=2
+;
 ; Main application initialization
 ;
 main:
     pagesel OpenXLCD
     call    OpenXLCD
- 
+
     movlw   LINE_ONE
     pagesel SetDDRamAddr
     call    SetDDRamAddr
@@ -370,7 +373,7 @@ IncrementCount:
 ;
 ; LCD messages
 ;
-    psect   MainConst,local,class=CODE,delta=2
+    psect   MainConst,global,class=STRCODE,delta=2,noexec
 LCD_message1:
 ;    dt  "NEC IR Decode v1",0
   IRP char,'N','E','C',' ','I','R',' ','D','e','c','o','d','e',' ','v','1',0

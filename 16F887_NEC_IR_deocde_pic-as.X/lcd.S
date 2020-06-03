@@ -21,12 +21,14 @@
 ;
 ; This RAM is used by the LCD interface routines.
 ;
-    psect   udata_shr
+        psect   LcdData_shr,global,class=COMMON,space=1,delta=1,noexec
 LCD_byte:   ds      1       ; byte sent to or read from LCD
 LCD_BusyBit: ds     1       ; Mask of where the BUSY bit is located
 pszLCD_RomStr: ds   2       ; pointer to ASCIIZ string in ROM
-
-    psect   LcdFunc,local,class=CODE,delta=2
+;
+; LCD code
+;
+    psect   LcdCode,global,class=CODE,delta=2
 
 ; DelayFor18TCY() provides a 18 Tcy delay
 DelayFor18TCY:
@@ -400,7 +402,7 @@ PutDecXLCD:
         addlw   256-80
         btfsc   STATUS,STATUS_C_POSITION ;skpnc
         bsf     pszLCD_RomStr+1,3
-        btfss   STATUS,STATUS_C_POSITION ;skpc 
+        btfss   STATUS,STATUS_C_POSITION ;skpc
         addlw   80
 
         addlw   256-40
@@ -467,79 +469,79 @@ TableLookUp:
 ; Character Generator RAM of
 ; the LCD module.
 ;
-    psect   LcdConst,local,class=CODE,delta=2
+    psect   LcdConst,global,class=STRCODE,delta=2,noexec
 CGRAM_Table:
     retlw   0b10000000  ; CGRAM character 1
-    retlw   0b10001110 
-    retlw   0b10001010 
-    retlw   0b10001010 
-    retlw   0b10001110 
-    retlw   0b10000000 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10001110
+    retlw   0b10001010
+    retlw   0b10001010
+    retlw   0b10001110
+    retlw   0b10000000
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b10001110  ; CGRAM character 2
-    retlw   0b10010001 
-    retlw   0b10010000 
-    retlw   0b10010000 
-    retlw   0b10010001 
-    retlw   0b10001110 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10010001
+    retlw   0b10010000
+    retlw   0b10010000
+    retlw   0b10010001
+    retlw   0b10001110
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b10001110  ; CGRAM character 3
-    retlw   0b10010001 
-    retlw   0b10010000 
-    retlw   0b10010011 
-    retlw   0b10010001 
-    retlw   0b10001110 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10010001
+    retlw   0b10010000
+    retlw   0b10010011
+    retlw   0b10010001
+    retlw   0b10001110
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b10000000  ; CGRAM character 4
-    retlw   0b10001110 
-    retlw   0b10001010 
-    retlw   0b10001010 
-    retlw   0b10001110 
-    retlw   0b10000000 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10001110
+    retlw   0b10001010
+    retlw   0b10001010
+    retlw   0b10001110
+    retlw   0b10000000
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b10011110  ; CGRAM character 5
-    retlw   0b10010001 
-    retlw   0b10010001 
-    retlw   0b10011110 
-    retlw   0b10010010 
-    retlw   0b10010001 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10010001
+    retlw   0b10010001
+    retlw   0b10011110
+    retlw   0b10010010
+    retlw   0b10010001
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b10001110  ; CGRAM character 6
-    retlw   0b10010001 
-    retlw   0b10010001 
-    retlw   0b10011111 
-    retlw   0b10010001 
-    retlw   0b10010001 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10010001
+    retlw   0b10010001
+    retlw   0b10011111
+    retlw   0b10010001
+    retlw   0b10010001
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b10010001  ; CGRAM character 7
-    retlw   0b10011011 
-    retlw   0b10010101 
-    retlw   0b10010101 
-    retlw   0b10010001 
-    retlw   0b10010001 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10011011
+    retlw   0b10010101
+    retlw   0b10010101
+    retlw   0b10010001
+    retlw   0b10010001
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b10000000  ; CGRAM character 8
-    retlw   0b10001110 
-    retlw   0b10001010 
-    retlw   0b10001010 
-    retlw   0b10001110 
-    retlw   0b10000000 
-    retlw   0b10000000 
-    retlw   0b10011111 
+    retlw   0b10001110
+    retlw   0b10001010
+    retlw   0b10001010
+    retlw   0b10001110
+    retlw   0b10000000
+    retlw   0b10000000
+    retlw   0b10011111
 
     retlw   0b00000000  ; End of table marker
 

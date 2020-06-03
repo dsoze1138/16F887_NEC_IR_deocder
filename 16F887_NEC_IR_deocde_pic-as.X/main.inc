@@ -1,4 +1,4 @@
-        list    c=250	; support long lines in list file
+        list    c=250   ; support long lines in list file
         radix   dec
 ;
 ; Include Special Function Register definitions

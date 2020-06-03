@@ -1,4 +1,4 @@
-        list    n=0, c=250	; No page breaks, support long lines in list file
+        list    n=0, c=250  ; No page breaks, support long lines in list file
         list    r=dec
         errorlevel -302         ; Suppress not in bank zero warning
 ;

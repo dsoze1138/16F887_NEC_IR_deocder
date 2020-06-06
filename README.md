@@ -24,6 +24,6 @@ For the PIC16F the pic-as assembler directive "IF" does not work.
 The MPASM assembler directive "BANKISEL" for the mid-range PIC16F (non-enhanced) 
 can be replaced using the preprocessor macro:
 
-'#define bankisel(x) dw 0x1383|((x&0x100)<<2)'  ; b?f STATUS,IRP
+`#define bankisel(x) dw 0x1383|((x&0x100)<<2)`
 
 This requires that the parameter be enclosed in parentheses '()'

@@ -82,8 +82,8 @@ NEC_IR_RawData:     ds  4
 NEC_IR_Address:     ds  1
 NEC_IR_Command:     ds  1
 NEC_IR_Flags:       ds  1
-#define BIT_NEC_IR_Flags_COMMAND NEC_IR_Flags,0
-#define BIT_NEC_IR_Flags_REPEAT  NEC_IR_Flags,1
+#define BIT_NEC_IR_Flags_COMMAND BANKMASK(NEC_IR_Flags),0
+#define BIT_NEC_IR_Flags_REPEAT  BANKMASK(NEC_IR_Flags),1
 ;
 ; Interrupt Service Routine
 ;
@@ -184,10 +184,10 @@ NEC_IR_NextState:
     btfsc   INTCON,INTCON_T0IF_POSITION
     bsf     STATUS,STATUS_C_POSITION
     banksel NEC_IR_RawData
-    rlf     NEC_IR_RawData,F
-    rlf     NEC_IR_RawData+1,F
-    rlf     NEC_IR_RawData+2,F
-    rlf     NEC_IR_RawData+3,F
+    rlf     BANKMASK(NEC_IR_RawData),F
+    rlf     BANKMASK(NEC_IR_RawData)+1,F
+    rlf     BANKMASK(NEC_IR_RawData)+2,F
+    rlf     BANKMASK(NEC_IR_RawData)+3,F
 EndOfBit:
     banksel PORTB
     btfss   PORTB,0             ; Skip when flash goes off
@@ -201,19 +201,19 @@ EndOfBit:
 ; Validate ADDRESS and COMMAND
 ;
     banksel NEC_IR_RawData
-    comf    NEC_IR_RawData,W
-    xorwf   NEC_IR_RawData+1,W
+    comf    BANKMASK(NEC_IR_RawData),W
+    xorwf   BANKMASK(NEC_IR_RawData)+1,W
     btfss   STATUS,STATUS_Z_POSITION
     goto    INT_End
-    comf    NEC_IR_RawData+2,W
-    xorwf   NEC_IR_RawData+3,W
+    comf    BANKMASK(NEC_IR_RawData)+2,W
+    xorwf   BANKMASK(NEC_IR_RawData)+3,W
     btfss   STATUS,STATUS_Z_POSITION
     goto    INT_End
 
-    movf    NEC_IR_RawData+1,W
-    movwf   NEC_IR_Command
-    movf    NEC_IR_RawData+3,W
-    movwf   NEC_IR_Address
+    movf    BANKMASK(NEC_IR_RawData)+1,W
+    movwf   BANKMASK(NEC_IR_Command)
+    movf    BANKMASK(NEC_IR_RawData)+3,W
+    movwf   BANKMASK(NEC_IR_Address)
     bsf     BIT_NEC_IR_Flags_COMMAND
     goto    INT_End
 ;
@@ -292,8 +292,8 @@ main:
     call    putrsXLCD
 
     banksel NEC_IR_Flags
-    clrf    NEC_IR_Flags
-    clrf    NEC_IR_State
+    clrf    BANKMASK(NEC_IR_Flags)
+    clrf    BANKMASK(NEC_IR_State)
     bcf     BIT_NEC_IR_Flags_COMMAND
     bcf     BIT_NEC_IR_Flags_REPEAT
     bcf     INTCON,INTCON_INTF_POSITION
@@ -303,7 +303,7 @@ main:
 ; Application process loop
 ;
 AppLoop:
-    movf    NEC_IR_Flags,F      ; Check for event
+    movf    BANKMASK(NEC_IR_Flags),F ; Check for event
     btfsc   STATUS,STATUS_Z_POSITION ; Skip if any event bit set
     GOTO    AppLoop             ;
 
@@ -311,14 +311,14 @@ AppLoop:
     btfsc   BIT_NEC_IR_Flags_REPEAT ; skip of not a REPEAT event
     goto    IncrementCount
     banksel RepeatCount
-    clrf    RepeatCount
+    clrf    BANKMASK(RepeatCount)
 ;
 ; Increment repeat count
 ;
 IncrementCount:
     banksel RepeatCount
-    incfsz  RepeatCount,W
-    movwf   RepeatCount
+    incfsz  BANKMASK(RepeatCount),W
+    movwf   BANKMASK(RepeatCount)
 
 ;
 ; Show measurement for Start Of Transmission (SOT) flash
@@ -345,11 +345,11 @@ IncrementCount:
     pagesel WriteDataXLCD
     call    WriteDataXLCD
     banksel NEC_IR_Address
-    movf    NEC_IR_Address,W
+    movf    BANKMASK(NEC_IR_Address),W
     pagesel PutHexXLCD
     call    PutHexXLCD
     banksel NEC_IR_Command
-    movf    NEC_IR_Command,W
+    movf    BANKMASK(NEC_IR_Command),W
     pagesel PutHexXLCD
     call    PutHexXLCD
 ;
@@ -359,14 +359,14 @@ IncrementCount:
     pagesel WriteDataXLCD
     call    WriteDataXLCD
     banksel RepeatCount
-    movf    RepeatCount,W
+    movf    BANKMASK(RepeatCount),W
     pagesel PutHexXLCD
     call    PutHexXLCD
 ;
 ; Clear event flags to enable capture of next event
 ;
     banksel NEC_IR_Flags
-    clrf    NEC_IR_Flags
+    clrf    BANKMASK(NEC_IR_Flags)
 
     pagesel AppLoop
     GOTO    AppLoop

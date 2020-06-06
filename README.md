@@ -26,4 +26,4 @@ can be replaced using the preprocessor macro:
 
 `#define bankisel(x) dw 0x1383|((x&0x100)<<2)`
 
-This requires that the parameter be enclosed in parentheses '()'
+This requires that the parameter be enclosed in parentheses '`()`'

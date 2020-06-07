@@ -22,11 +22,8 @@ expressions. Relocatable expression that are resolved by the linker such as the
 argument for the MPASM `BANKISEL` directive cannot be used in these expressions.
 
 The MPASM assembler directive `BANKISEL` for the mid-range PIC16F (non-enhanced) 
-can be replaced using the preprocessor macro:
-
-`#define bankisel(Address) dw 0x1383|((Address&0x100)<<2)`
-
-This requires that the parameter be enclosed in parentheses '`()`'
+can be replaced using the preprocessor macro: `#define bankisel(Address) dw 0x1383|((Address&0x100)<<2)`
+This requires that the parameter be enclosed in parentheses `()`.
 
 Or this pis-as(v2.20) assembler `MACRO`:
 

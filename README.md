@@ -28,10 +28,8 @@ can be replaced using the preprocessor macro:
 
 Or this pis-as(v2.20) assembler `MACRO`:
 
-`bankisel MACRO arg1`
-
-`    dw   0x1383|((arg1 and 0x100) shl 2)`
-
-`  ENDM`
+    bankisel MACRO arg1
+        dw   0x1383|((arg1 and 0x100) shl 2)
+      ENDM
 
 This requires that the parameter be enclosed in parentheses '`()`'

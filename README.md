@@ -17,8 +17,6 @@ I am using this project as a test for porting an MPASM project to pic-as(v2.20)
 
 Issues found so far:
 
-For the PIC16F the pic-as assembler directive "MACRO" fails when parameters are present.
-
 For the PIC16F the pic-as assembler directive "IF" does not work.
 
 The MPASM assembler directive "BANKISEL" for the mid-range PIC16F (non-enhanced) 

@@ -27,8 +27,11 @@ can be replaced using the preprocessor macro:
 `#define bankisel(Address) dw 0x1383|((Address&0x100)<<2)`
 
 Or this pis-as(v2.20) assembler `MACRO`:
+
 `bankisel MACRO arg1`
+
 `    dw   0x1383|((arg1 and 0x100) shl 2)`
+
 `  ENDM`
 
 This requires that the parameter be enclosed in parentheses '`()`'

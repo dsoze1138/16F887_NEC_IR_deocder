@@ -17,6 +17,12 @@ I am using this project as a test for porting an MPASM project to pic-as(v2.20)
 
 Issues found so far:
 
+When MPLABX v5.40 builds non-PIC18F targets with the pis-as(v2.20) tool chain it asserts this message: 
+
+`::: warning: (1428) "-misa=std" is not supported; this feature will be ignored`
+
+The `"-misa=std"` option is supported only for PIC18F controller targets.
+
 The preprocessor macro `#if` and the assembler directive `IF` accept only absolute 
 expressions. Relocatable expression that are resolved by the linker such as the 
 argument for the MPASM `BANKISEL` directive cannot be used in these expressions.

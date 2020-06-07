@@ -17,11 +17,18 @@ I am using this project as a test for porting an MPASM project to pic-as(v2.20)
 
 Issues found so far:
 
-For the PIC16F the pic-as assembler directive "IF" does not work.
+The preprocessor macro `#if` and the assembler directive `IF` accept only absolute 
+expressions. Relocatable expression that are resolved by the linker such as the 
+argument for the MPASM `BANKISEL` directive cannot be used in these expressions.
 
-The MPASM assembler directive "BANKISEL" for the mid-range PIC16F (non-enhanced) 
+The MPASM assembler directive `BANKISEL` for the mid-range PIC16F (non-enhanced) 
 can be replaced using the preprocessor macro:
 
-`#define bankisel(x) dw 0x1383|((x&0x100)<<2)`
+`#define bankisel(Address) dw 0x1383|((Address&0x100)<<2)`
+
+Or this pis-as(v2.20) assembler `MACRO`:
+`bankisel MACRO arg1`
+`    dw   0x1383|((arg1 and 0x100) shl 2)`
+`  ENDM`
 
 This requires that the parameter be enclosed in parentheses '`()`'

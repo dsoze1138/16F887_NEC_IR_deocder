@@ -31,7 +31,7 @@ The MPASM assembler directive `BANKISEL` for the mid-range PIC16F (non-enhanced)
 can be replaced using the preprocessor macro: `#define bankisel(Address) dw 0x1383|((Address&0x100)<<2)`
 This requires that the parameter be enclosed in parentheses `()`.
 
-Or this pis-as(v2.20) assembler `MACRO`:
+Or this pic-as(v2.20) assembler `MACRO`:
 
     bankisel MACRO arg1
         dw   0x1383|((arg1 and 0x100) shl 2)
